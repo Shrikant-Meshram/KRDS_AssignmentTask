@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const passport = require('passport')
-const { userCreate, userLogin } = require("../controllers/userController")
-const { createBook, getBookByQueryParams, getBookById, updateBookById, deleteById } = require("../controllers/bookController")
+const { userCreate ,createlist,bookByQuery} = require("../controllers/userController")
+const { createBook, getBookByQueryParams,  updateBookById, deleteById } = require("../controllers/bookController")
 
-const { authentication ,authorization } = require("../middlewares/auth")
-const {addToList, bookByQuery} = require("../controllers/listContoller");
+
+
 const { login } = require("../controllers/usercontroller");
 
 router.get('/', (req, res) => {
@@ -58,12 +58,12 @@ router.get("/login",login)
 //----------Book's Api-------------------//
 router.post("/books", createBook)
 router.get("/books", getBookByQueryParams)
-router.get("/books/:bookId"  ,getBookById)
+
 router.put("/books/:bookId",isAuthenticated, updateBookById)
 router.delete("/books/:bookId",isAuthenticated, deleteById)
 
 //----------Review's Api-------------------//
-router.post("/list/:userId",isAuthenticated ,addToList)
+router.post("/list/:userId",isAuthenticated ,createlist)
 router.get("/fetchBook",isAuthenticated,bookByQuery)
 
 

@@ -1,5 +1,6 @@
 const userModel = require("../models/userModel")
-const jwt = require("jsonwebtoken")
+const bookModel = require("../models/bookModel")
+
 //#######################################################################################################################################################################
 //Here We Requiring All the validation function from util/validations
 const { isValid, isValidRequestBody, isValidTitle } = require("../utils/validations")
@@ -81,5 +82,56 @@ const login = async (req, res) => {
         res.status(500).json({ message: err.message })
     }
 }
+
+const createlist = async (req, res) => {
+    try {
+        let userId = req.params.id
+        let data = req.body
+
+        if (!data.bookId) return res.status(400).json({ message: "body is empty, provide bookId  to add in your list" })
+        const book = await bookModel.findById(data.bookId)
+        if (!book) return res.status(404).json({ message: "No book found" })
+        const bookId = book._id
+
+        const list = await userModel.findOneAndUpdate(
+            { _id: userId },
+            { $push: { personalList: bookId } }, { new: true })
+
+        return res.status(201).json({ data: list, message: "Book added to your personal list" })
+    } catch (err) {
+        res.status(500).send({ message: err.message })
+    }
+}
+
+const bookByQuery = async (req, res) => {
+    try {
+        const requestBody = req.query
+       
+      
+        const filterQuery = {isDeleted:false}
+
+        if (isValidRequestBody(requestBody)) {
+            if (requestBody.title) {filterQuery.title = requestBody.title.trim()}
+            if (requestBody.ISBN) {filterQuery.ISBN = requestBody.ISBN.trim()}
+           
+            
+        }
+
+        let bookData = await bookModel.find(filterQuery).sort({ title: 1 }).select({ _id: 1, title: 1, userId: 1,ISBN:1, category: 1 })
+        
+        if (bookData.length===0){
+            
+             return res.status(404).send({ status: false, message: "No Book found" })
+        }
+
+        return res.status(200).send({ status: true, message: "Found successfully", data: bookData })
+
+    } catch (err) {
+        return res.status(500).send({ status: false, Error: err.message })
+    }
+}
+
+
+
 //#######################################################################################################################################################################
-module.exports = { userCreate,login }
+module.exports = { userCreate,login,createlist, bookByQuery }
