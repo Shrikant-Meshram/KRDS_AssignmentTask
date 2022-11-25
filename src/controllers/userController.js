@@ -116,8 +116,9 @@ const bookByQuery = async (req, res) => {
            
             
         }
+        if(!requestBody) return res.status(400).send({msg:"please provide query"})
 
-        let bookData = await bookModel.find(filterQuery).sort({ title: 1 }).select({ _id: 1, title: 1, userId: 1,ISBN:1, category: 1 })
+        let bookData = await bookModel.find(requestBody).sort({ title: 1 }).select({ _id: 1, title: 1, userId: 1,ISBN:1, category: 1 })
         
         if (bookData.length===0){
             
