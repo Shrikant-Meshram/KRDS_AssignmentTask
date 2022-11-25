@@ -1,0 +1,22 @@
+{
+  "name": "krds_assignmenttask",
+  "version": "1.0.0",
+  "description": "Assignment",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Shrikant-Meshram/KRDS_AssignmentTask.git"
+  },
+  "author": "Shrikant_Meshram",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Shrikant-Meshram/KRDS_AssignmentTask/issues"
+  },
+  "homepage": "https://github.com/Shrikant-Meshram/KRDS_AssignmentTask#readme",
+  "dependencies": {
+    "init": "^0.1.2"
+  }
+}
